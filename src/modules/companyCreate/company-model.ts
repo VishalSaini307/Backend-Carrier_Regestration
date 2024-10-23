@@ -13,7 +13,7 @@ interface ICarrier extends Document {
   Phone: number;
   Email: string;
   CarrierOperation: string;
-  HazardousMaterials: string[];
+  HazardousMaterials: string;
   OperatingAuthority: {
     Common: string;
     Contract: string;
@@ -29,7 +29,6 @@ interface ICarrier extends Document {
     DriverFitness: string;
     ControlledSubstancesAlcohol: string;
     VehicleMaintenance: string;
-    HazardousMaterialsCompliance: string;
     CrashIndicator: string;
   };
   Inspections: {
@@ -60,6 +59,7 @@ interface ICarrier extends Document {
     Status: string;
     MCS150FormDate: Date;
   };
+  HazardousMaterialsCompliance: string;
 }
 
 const CarrierSchema = new Schema<ICarrier>({
@@ -75,7 +75,7 @@ const CarrierSchema = new Schema<ICarrier>({
   Phone: { type: Number, required: true },
   Email: { type: String, required: true },
   CarrierOperation: { type: String, required: true },
-  HazardousMaterials: [{ type: String, required: true }],
+  HazardousMaterials: { type: String, required: true },
   OperatingAuthority: {
     Common: { type: String, required: true },
     Contract: { type: String, required: true },
@@ -91,7 +91,6 @@ const CarrierSchema = new Schema<ICarrier>({
     DriverFitness: { type: String, required: true },
     ControlledSubstancesAlcohol: { type: String, required: true },
     VehicleMaintenance: { type: String, required: true },
-    HazardousMaterialsCompliance: { type: String, required: true },
     CrashIndicator: { type: String, required: true }
   },
   Inspections: {
@@ -121,7 +120,8 @@ const CarrierSchema = new Schema<ICarrier>({
   Registration: {
     Status: { type: String, required: true },
     MCS150FormDate: { type: Date, required: true }
-  }
+  },
+  HazardousMaterialsCompliance: { type: String, required: true },
 });
 
 const CarrierModel = mongoose.model<ICarrier>('Carrier', CarrierSchema);

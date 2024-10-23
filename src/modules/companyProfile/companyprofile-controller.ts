@@ -111,29 +111,32 @@ export const deleteCompany = async (req: Request, res: Response) => {
 
 export const getAllCompanies = async (req: Request, res: Response) => {
     try {
-        const requester = (req as any).user;
-
-        let companies;
-
-        if (requester.role === 'superadmin') {
-            // Superadmin can see all companies
-            companies = await Company.find();
-        } else if (requester.role === 'admin') {
-            // Admin can see only their associated company
-            companies = await Company.find({ _id: requester.companyId });
-        } else if (requester.role === 'superadminuser') {
-            // Superadmin user can see companies associated with their superadmin
-            companies = await Company.find({ superadminId: requester.superadminId });
-        } else {
-            // Handle unauthorized access for other user types
-            return res.status(403).json({ message: 'Access denied. Unauthorized user type.' });
-        }
-
-        res.status(200).json(companies);
+      const requester = (req as any).user;
+  
+      let companies;
+  
+      if (requester.role === 'superadmin') {
+        // Superadmin can see all companies
+        companies = await Company.find();
+      } else if (requester.role === 'admin') {
+        // Admin can only see their associated company
+        companies = await Company.find({ _id: requester.companyId });
+      } else if (requester.role === 'adminuser') {
+        // Adminuser can see only the company they are assigned to via their admin
+        companies = await Company.find({ _id: requester.companyId }); // assuming companyId is stored in the adminuser's profile
+      } else if (requester.role === 'superadminuser') {
+        // Superadmin user can see companies associated with their superadmin
+        companies = await Company.find({ superadminId: requester.superadminId });
+      } else {
+        // Handle unauthorized access for other user types
+        return res.status(403).json({ message: 'Access denied. Unauthorized user type.' });
+      }
+  
+      res.status(200).json(companies);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+      res.status(400).json({ message: error.message });
     }
-};
+  };
 
 
 export const getCompanyById = async (req: Request, res: Response) => {

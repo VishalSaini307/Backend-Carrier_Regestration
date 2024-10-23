@@ -13,11 +13,14 @@ export const createTrailer = async (req: Request, res: Response) => {
 
             const user = (req as any).user;
             const adminId = user.adminId;
+            const companyId = user.companyId;
+
 
             const trailerData = {
                 ...req.body,
                 createdBy: user._id,
                 adminId,
+                companyId: companyId,
             };
 
             // Handle file uploads from req.cloudinaryUrls

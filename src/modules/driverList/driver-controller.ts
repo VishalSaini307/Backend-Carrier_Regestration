@@ -13,10 +13,12 @@ export const createDriver = async (req, res) => {
 
             const user = (req as any).user;
             const adminId = user.adminId;
+            const companyId = user.companyId;
 
             const driverData = {
                 ...req.body, createdBy: user._id,
                 adminId,
+                companyId: companyId,
             };
 
             if (req.cloudinaryUrls) {
